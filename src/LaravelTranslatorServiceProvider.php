@@ -2,6 +2,8 @@
 
 namespace IsaEken\LaravelTranslator;
 
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\View\Compilers\BladeCompiler;
 use IsaEken\LaravelTranslator\Translation\Translator;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -27,6 +29,17 @@ class LaravelTranslatorServiceProvider extends PackageServiceProvider
                 $translator = new Translator($loader, $locale);
                 $translator->setFallback($fallback);
                 return $translator;
+            });
+
+            Artisan::call('view:clear');
+        }
+
+        if ($this->app->resolved('blade.compiler')) {
+            /** @var BladeCompiler $bladeCompiler */
+            $bladeCompiler = $this->app['blade.compiler'];
+
+            $bladeCompiler->directive('translator', function () {
+                return (new BladeScriptGenerator())->__invoke();
             });
         }
     }
