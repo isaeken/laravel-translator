@@ -20,19 +20,23 @@ class LaravelTranslatorServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
+        if (!($this->app->environment() === 'production' && config('translator.production', true) === true)) {
+            return;
+        }
+
         if ($this->app->environment() !== 'production') {
-            $this->app->singleton('translator', function ($app) {
-                $loader = $app['translation.loader'];
-                $locale = $app['config']['app.locale'];
-                $fallback = $app['config']['app.fallback_locale'];
-
-                $translator = new Translator($loader, $locale);
-                $translator->setFallback($fallback);
-                return $translator;
-            });
-
             Artisan::call('view:clear');
         }
+
+        $this->app->singleton('translator', function ($app) {
+            $loader = $app['translation.loader'];
+            $locale = $app['config']['app.locale'];
+            $fallback = $app['config']['app.fallback_locale'];
+
+            $translator = new Translator($loader, $locale);
+            $translator->setFallback($fallback);
+            return $translator;
+        });
 
         if ($this->app->resolved('blade.compiler')) {
             /** @var BladeCompiler $bladeCompiler */
