@@ -7,6 +7,30 @@ use IsaEken\LaravelTranslator\Exceptions\TranslationNotExistsException;
 class Translator extends \Illuminate\Translation\Translator
 {
     /**
+     * @param  string|null  $locale
+     *
+     * @return array
+     */
+    public function all(string|null $locale = null): array
+    {
+        if ($locale === null) {
+            $locale = $this->locale;
+        }
+
+        $translations = [];
+
+        if (file_exists($path = resource_path('lang/' . $this->fallback . '.json'))) {
+            $translations = @json_decode(file_get_contents($path), true, flags: JSON_UNESCAPED_UNICODE) ?? [];
+        }
+
+        if (file_exists($path = resource_path('lang/' . $locale . '.json'))) {
+            array_merge($translations, @json_decode(file_get_contents($path), true, flags: JSON_UNESCAPED_UNICODE) ?? []);
+        }
+
+        return $translations;
+    }
+
+    /**
      * @param  string  $key
      * @param  string  $translation
      * @param  string  $locale
