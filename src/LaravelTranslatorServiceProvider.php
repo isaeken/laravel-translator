@@ -16,8 +16,7 @@ class LaravelTranslatorServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('laravel-translator')
-            ->hasConfigFile()
-            ->hasRoute('translations');
+            ->hasConfigFile();
     }
 
     public function packageBooted()
