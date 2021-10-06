@@ -4,7 +4,7 @@ namespace IsaEken\LaravelTranslator\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use IsaEken\LaravelTranslator\LaravelTranslator;
+use IsaEken\LaravelTranslator\Translation\Translator;
 
 class LocaleController extends Controller
 {
@@ -13,12 +13,13 @@ class LocaleController extends Controller
      */
     public function locale(): JsonResponse
     {
+        /** @var Translator $translator */
+        $translator = app('translator');
+
         return response()->json([
-            'locale'       => $locale = app()->getLocale(),
-            'fallback'     => app('translator')->getFallback(),
-            'is_supported' => LaravelTranslator::isSupported($locale),
-            'locales'      => LaravelTranslator::getLocales(),
-            'translations' => LaravelTranslator::getTranslations(),
+            'locale'       => $translator->getLocale(),
+            'fallback'     => $translator->getFallback(),
+            'translations' => $translator->all(),
         ], options: app()->environment() !== 'production' ? JSON_PRETTY_PRINT : null);
     }
 }

@@ -6,7 +6,7 @@ class BladeScriptGenerator
 {
     public function __invoke(): string
     {
-        $translations = json_encode(LaravelTranslator::getTranslations());
+        $translations = json_encode(app('translator')->all());
 
         return <<<HTML
 <script type="text/javascript">
