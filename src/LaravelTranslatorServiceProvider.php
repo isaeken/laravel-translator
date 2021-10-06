@@ -40,6 +40,7 @@ class LaravelTranslatorServiceProvider extends PackageServiceProvider
 
             $translator = new Translator($loader, $locale);
             $translator->setFallback($fallback);
+
             return $translator;
         });
 

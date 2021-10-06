@@ -47,7 +47,7 @@ class Translator extends \Illuminate\Translation\Translator
                 $translations = @json_decode(file_get_contents($path), true, flags: JSON_UNESCAPED_UNICODE) ?? [];
             }
 
-            if (!array_key_exists($key, $translations)) {
+            if (! array_key_exists($key, $translations)) {
                 $translations[$key] = $translation;
                 file_put_contents($path, json_encode($translations, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
             }

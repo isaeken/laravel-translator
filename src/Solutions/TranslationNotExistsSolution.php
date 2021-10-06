@@ -12,7 +12,7 @@ class TranslationNotExistsSolution implements RunnableSolution
      * @param  string|null  $translation
      * @param  string|null  $locale
      */
-    public function __construct(public string|null $translation = null, public string|null $locale = null)
+    public function __construct(public string | null $translation = null, public string | null $locale = null)
     {
         // ...
     }
@@ -36,11 +36,9 @@ class TranslationNotExistsSolution implements RunnableSolution
     {
         if ($this->translation !== null && $this->locale !== null) {
             return "Add `$this->translation` to `$this->locale` translations.";
-        }
-        else if ($this->translation !== null) {
+        } elseif ($this->translation !== null) {
             return "Add `$this->translation` to your default locale.";
-        }
-        else if ($this->locale !== null) {
+        } elseif ($this->locale !== null) {
             return "Add requested translations to your `$this->locale`.";
         }
 
@@ -52,13 +50,14 @@ class TranslationNotExistsSolution implements RunnableSolution
         return 'Add translation';
     }
 
-    #[ArrayShape(['translation' => "null|string", 'locale' => "null|string"])] public function getRunParameters(): array
-    {
-        return [
+    #[ArrayShape(['translation' => "null|string", 'locale' => "null|string"])]
+ public function getRunParameters(): array
+ {
+     return [
             'translation' => $this->translation,
             'locale' => $this->locale,
         ];
-    }
+ }
 
     public function run(array $parameters = [])
     {

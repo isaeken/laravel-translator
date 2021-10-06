@@ -15,10 +15,11 @@ class TranslationSolutionProvider implements HasSolutionsForThrowable
         return $throwable instanceof TranslationNotExistsException;
     }
 
-    #[Pure] public function getSolutions(Throwable $throwable): array
-    {
-        return [
+    #[Pure]
+ public function getSolutions(Throwable $throwable): array
+ {
+     return [
             new TranslationNotExistsSolution($throwable->translation, $throwable->locale),
         ];
-    }
+ }
 }
