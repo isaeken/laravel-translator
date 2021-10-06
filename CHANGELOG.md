@@ -14,3 +14,4 @@ All notable changes to `laravel-translator` will be documented in this file.
 - removed ``getOrNew`` method from Translator class
 - added ``add`` method to Translator class
 - added ``all`` method to Translator class
+- removed routes
