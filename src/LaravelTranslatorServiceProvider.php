@@ -21,16 +21,16 @@ class LaravelTranslatorServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        $this->app
-            ->make(SolutionProviderRepository::class)
-            ->registerSolutionProvider(TranslationSolutionProvider::class);
-
         if (config('translator.production', true) === false && $this->app->environment() === 'production') {
             return;
         }
 
-        if ($this->app->environment() !== 'production') {
+        if ($this->app->environment() === 'local') {
             Artisan::call('view:clear');
+
+            $this->app
+                ->make(SolutionProviderRepository::class)
+                ->registerSolutionProvider(TranslationSolutionProvider::class);
         }
 
         $this->app->singleton('translator', function ($app) {
