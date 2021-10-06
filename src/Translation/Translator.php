@@ -40,7 +40,7 @@ class Translator extends \Illuminate\Translation\Translator
      *
      * @return string|array
      */
-    public function get($key, array $replace = [], string|null $locale = null, $fallback = true): array|string
+    public function get($key, array $replace = [], $locale = null, $fallback = true): array|string
     {
         if ($locale === null) {
             $locale = $this->locale;
