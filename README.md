@@ -1,11 +1,15 @@
-# Laravel translation helpers
+# Laravel Translator
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/isaeken/laravel-translator.svg?style=flat-square)](https://packagist.org/packages/isaeken/laravel-translator)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/isaeken/laravel-translator/run-tests?label=tests)](https://github.com/isaeken/laravel-translator/actions?query=workflow%3Arun-tests+branch%3Amain)
+![Laravel Translator](https://banners.beyondco.de/Laravel%20Translator.png?theme=light&packageManager=composer%20require&packageName=isaeken/laravel-translator&pattern=architect&style=style_1&md=1&showWatermark=1&fontSize=100px&images=https://laravel.com/img/logomark.min.svg)
+
+[![Latest Version](https://img.shields.io/github/v/tag/isaeken/laravel-translator?sort=semver&label=version)](https://packagist.org/packages/isaeken/laravel-translator)
+![CircleCI](https://img.shields.io/circleci/build/github/isaeken/laravel-translator)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/isaeken/laravel-translator/Check%20&%20fix%20styling?label=code%20style)](https://github.com/isaeken/laravel-translator/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/isaeken/laravel-translator.svg?style=flat-square)](https://packagist.org/packages/isaeken/laravel-translator)
 
-## Installation
+## Installation and setup
+
+### Installation
 
 You can install the package via composer:
 
@@ -13,31 +17,44 @@ You can install the package via composer:
 composer require isaeken/laravel-translator
 ```
 
+### Setup
+
 You can publish the config file with:
 
 ```bash
 php artisan vendor:publish --provider="IsaEken\LaravelTranslator\LaravelTranslatorServiceProvider" --tag="laravel-translator-config"
 ```
 
-This is the contents of the published config file:
-
-```php
-return [
-    'supported_languages' => [
-        'en' => 'English',
-    ],
-
-    'abort_if_unsupported' => false,
-];
-```
-
 ## Usage
 
-```php
-__('Hello World'); // Save to your fallback language file in not production environment.
-```
+You can activate auto save translation
 
-See ``/api/translator/?locale=tr``
+````php
+// config/translator.php
+'autosave' => true
+````
+
+You can use the translation system as in Laravel standards.
+
+````php
+__('Hello :var', ['var' => 'World']); // save to your fallback file when auto save enabled.
+````
+
+You can use the translation system with javascript by adding the "@translator" directive to the head in your design.
+
+````html
+<head>
+    @translator
+    <script src="..."></script>
+</head>
+````
+
+````javascript
+__('Hello');
+__('Hello :var', {'var': 'World'});
+````
+
+> Automatic recording or errors will not work in the translations you use on Javascript.
 
 ## Changelog
 
