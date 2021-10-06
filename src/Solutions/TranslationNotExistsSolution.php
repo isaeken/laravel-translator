@@ -3,6 +3,7 @@
 namespace IsaEken\LaravelTranslator\Solutions;
 
 use Facade\IgnitionContracts\RunnableSolution;
+use IsaEken\LaravelTranslator\Translation\Translator;
 use JetBrains\PhpStorm\ArrayShape;
 
 class TranslationNotExistsSolution implements RunnableSolution
@@ -61,6 +62,10 @@ class TranslationNotExistsSolution implements RunnableSolution
 
     public function run(array $parameters = [])
     {
-        // @todo
+        if (isset($parameters['translation']) && isset($parameters['locale'])) {
+            /** @var Translator $translator */
+            $translator = app('translator');
+            $translator->add($parameters['translation'], $parameters['translation'], $parameters['locale']);
+        }
     }
 }
