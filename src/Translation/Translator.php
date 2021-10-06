@@ -7,22 +7,16 @@ use IsaEken\LaravelTranslator\Exceptions\TranslationNotExistsException;
 class Translator extends \Illuminate\Translation\Translator
 {
     /**
-     * Get or create the translation.
-     *
      * @param  string  $key
-     * @param  array  $replace
-     * @param  string|null  $locale
-     * @param  bool  $fallback
-     *
-     * @return string|array
+     * @param  string  $translation
+     * @param  string  $locale
      */
-    public function getOrNew(string $key, array $replace = [], string|null $locale = null, bool $fallback = true): string|array
+    public function add(string $key, string $translation, string $locale): void
     {
-        $locale = $locale ?: $this->locale;
         $this->load('*', '*', $locale);
 
-        if (!$this->has($key, $locale, false)) {
-            $path = resource_path('lang/' . $this->fallback . '.json');
+        if (! $this->has($key, $locale, false)) {
+            $path = resource_path('lang/' . $locale . '.json');
             $translations = [];
 
             if (file_exists($path)) {
@@ -30,12 +24,10 @@ class Translator extends \Illuminate\Translation\Translator
             }
 
             if (!array_key_exists($key, $translations)) {
-                $translations[$key] = $key;
+                $translations[$key] = $translation;
                 file_put_contents($path, json_encode($translations, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
             }
         }
-
-        return parent::get($key, $replace, $locale, $fallback);
     }
 
     /**
@@ -48,14 +40,26 @@ class Translator extends \Illuminate\Translation\Translator
      *
      * @return string|array
      */
-    public function get($key, array $replace = [], $locale = null, $fallback = true): array|string
+    public function get($key, array $replace = [], string|null $locale = null, $fallback = true): array|string
     {
+        if ($locale === null) {
+            $locale = $this->locale;
+        }
+
         if (config('translator.throw_undefined', false) === true) {
             throw_unless($this->has($key, $locale, false), TranslationNotExistsException::class, $key, $locale);
         }
 
         if (config('translator.autosave', false) === true) {
-            return $this->getOrNew($key, $replace, $locale, $fallback);
+            $this->load('*', '*', $locale);
+
+            if (! $this->has($key, $this->fallback, false)) {
+                $this->add($key, $key, $this->fallback);
+            }
+
+            if (! $this->has($key, $locale, false)) {
+                $this->add($key, $key, $locale);
+            }
         }
 
         return parent::get($key, $replace, $locale, $fallback);
