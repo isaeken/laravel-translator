@@ -1,5 +1,6 @@
 {
     "name": "isaeken/laravel-translator",
+    "version": "v1.1",
     "description": "Laravel translation helpers",
     "keywords": [
         "isaeken",
@@ -9,6 +10,8 @@
     ],
     "homepage": "https://github.com/isaeken/laravel-translator",
     "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Isa Eken",
@@ -57,7 +60,5 @@
                 "LaravelTranslator": "IsaEken\\LaravelTranslator\\LaravelTranslatorFacade"
             }
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
