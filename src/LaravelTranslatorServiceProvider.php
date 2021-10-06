@@ -2,8 +2,10 @@
 
 namespace IsaEken\LaravelTranslator;
 
+use Facade\IgnitionContracts\SolutionProviderRepository;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\Compilers\BladeCompiler;
+use IsaEken\LaravelTranslator\SolutionProviders\TranslationSolutionProvider;
 use IsaEken\LaravelTranslator\Translation\Translator;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -20,7 +22,11 @@ class LaravelTranslatorServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        if (!($this->app->environment() === 'production' && config('translator.production', true) === true)) {
+        $this->app
+            ->make(SolutionProviderRepository::class)
+            ->registerSolutionProvider(TranslationSolutionProvider::class);
+
+        if (config('translator.production', true) === false && $this->app->environment() === 'production') {
             return;
         }
 
