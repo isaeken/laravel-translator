@@ -43,7 +43,7 @@ class Translator extends \Illuminate\Translation\Translator
     {
         $this->load('*', '*', $locale);
 
-        if (!$this->has($key, $locale, false)) {
+        if (! $this->has($key, $locale, false)) {
             $path = resource_path('lang/' . $locale . '.json');
             $translations = [];
 
@@ -51,7 +51,7 @@ class Translator extends \Illuminate\Translation\Translator
                 $translations = @json_decode(file_get_contents($path), true, flags: JSON_UNESCAPED_UNICODE) ?? [];
             }
 
-            if (!array_key_exists($key, $translations)) {
+            if (! array_key_exists($key, $translations)) {
                 $translations[$key] = $translation;
                 file_put_contents($path, json_encode($translations, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
             }
@@ -86,12 +86,12 @@ class Translator extends \Illuminate\Translation\Translator
         $this->load('*', '*', $locale);
         $line = $this->loaded['*']['*'][$locale][$key] ?? null;
 
-        if (!isset($line)) {
+        if (! isset($line)) {
             [$namespace, $group, $item] = $this->parseKey($key);
             $locales = $fallback ? $this->localeArray($locale) : [$locale];
 
             foreach ($locales as $locale) {
-                if (!is_null($line = $this->getLine($namespace, $group, $locale, $item, $replace))) {
+                if (! is_null($line = $this->getLine($namespace, $group, $locale, $item, $replace))) {
                     return $line;
                 }
             }
@@ -121,7 +121,7 @@ class Translator extends \Illuminate\Translation\Translator
         if (config('translator.autosave', false) === true) {
             $this->load('*', '*', $locale);
 
-            if (!$this->has($key, $locale, false)) {
+            if (! $this->has($key, $locale, false)) {
                 $this->add($key, $key, $locale);
             }
         }

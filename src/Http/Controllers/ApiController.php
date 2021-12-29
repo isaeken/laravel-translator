@@ -16,6 +16,7 @@ class ApiController extends Controller
     public function index(string $locale): JsonResponse
     {
         app()->setLocale($locale);
+
         return response()->json(app('translator')->all());
     }
 }
