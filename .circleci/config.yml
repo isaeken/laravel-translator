@@ -11,6 +11,7 @@ jobs:
     docker:
       # Specify the version you desire here
       - image: circleci/php:8.0-cli
+      - image: circleci/php:8.1-cli
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images

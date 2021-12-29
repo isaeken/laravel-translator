@@ -1,6 +1,6 @@
 {
     "name": "isaeken/laravel-translator",
-    "version": "v1.1",
+    "version": "v1.x-dev",
     "description": "Laravel translation helpers",
     "keywords": [
         "isaeken",
