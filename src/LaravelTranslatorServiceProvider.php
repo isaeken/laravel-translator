@@ -3,7 +3,6 @@
 namespace IsaEken\LaravelTranslator;
 
 use Facade\IgnitionContracts\SolutionProviderRepository;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\View\Compilers\BladeCompiler;
 use IsaEken\LaravelTranslator\SolutionProviders\TranslationSolutionProvider;
 use IsaEken\LaravelTranslator\Translation\Translator;
@@ -22,27 +21,14 @@ class LaravelTranslatorServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        if (config('translator.production', true) === false && $this->app->environment() === 'production') {
-            return;
-        }
-
         if ($this->app->environment() === 'local') {
-            Artisan::call('view:clear');
-
             $this->app
                 ->make(SolutionProviderRepository::class)
                 ->registerSolutionProvider(TranslationSolutionProvider::class);
         }
 
-        $this->app->singleton('translator', function ($app) {
-            $loader = $app['translation.loader'];
-            $locale = $app['config']['app.locale'];
-            $fallback = $app['config']['app.fallback_locale'];
-
-            $translator = new Translator($loader, $locale);
-            $translator->setFallback($fallback);
-
-            return $translator;
+        $this->app->extend('translator', function (\Illuminate\Translation\Translator $translator) {
+            return new Translator($translator->getLoader(), $translator->getLocale());
         });
 
         if ($this->app->resolved('blade.compiler')) {
